@@ -1,0 +1,11 @@
+version: "3"
+services:
+
+  gcp:
+    build: ./gcp
+    entrypoint: sh ./deploy/gcp/deploy.sh
+    working_dir: /workspace
+    env_file: ./gcp/.env
+    volumes:
+      - ../:/workspace
+      - /var/run/docker.sock:/var/run/docker.sock:ro

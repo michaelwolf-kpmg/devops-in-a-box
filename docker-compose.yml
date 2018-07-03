@@ -1,0 +1,93 @@
+version: "3"
+services:
+
+  proxy:
+    image: jwilder/nginx-proxy
+    container_name: proxy
+    restart: always
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    ports:
+      - 80:80
+      - 443:443
+
+  openldap:
+    image: jardilio/devops-in-a-box-openldap:latest
+    build: ./openldap
+    container_name: openldap
+    restart: always
+    volumes:
+      - openldap-data:/var/lib/ldap
+      - openldap-config:/etc/ldap/slapd.d
+    env_file: ./.env
+  
+  openldap-admin:
+    image: osixia/phpldapadmin:0.7.0
+    container_name: openldap-admin
+    restart: always
+    env_file: ./.env
+    environment: 
+      VIRTUAL_HOST: openldap-admin.${DOS_HOST}
+      PHPLDAPADMIN_LDAP_HOSTS: openldap
+      PHPLDAPADMIN_HTTPS: 'false'
+    depends_on:
+      - proxy
+      - openldap
+
+  gitlab:
+    image: jardilio/devops-in-a-box-gitlab:latest
+    build: ./gitlab
+    container_name: gitlab
+    restart: always
+    volumes:
+      - gitlab-data:/var/opt/gitlab
+      - gitlab-logs:/var/log/gitlab
+      - gitlab-config:/etc/gitlab
+    env_file: ./.env
+    environment: 
+      VIRTUAL_HOST: gitlab.${DOS_HOST}
+      GITLAB_HOST: ${DOS_PROTOCOL}://gitlab.${DOS_HOST}
+    depends_on:
+      - openldap
+      - proxy
+
+  jenkins:
+    image: jardilio/devops-in-a-box-jenkins:latest
+    build: ./jenkins
+    container_name: jenkins
+    restart: always
+    volumes:
+      - jenkins-data:/var/jenkins_home
+      - jenkins-workspace:/var/jenkins_home/workspace
+    env_file: ./.env
+    environment: 
+      VIRTUAL_HOST: jenkins.${DOS_HOST}
+      VIRTUAL_PORT: 8080
+      JENKINS_URL: ${DOS_PROTOCOL}://jenkins.${DOS_HOST}/
+    depends_on:
+      - proxy
+      - openldap
+      - jenkins-docker-agent
+
+  jenkins-docker-agent:
+    image: jardilio/devops-in-a-box-jenkins-docker-agent:latest
+    build: ./jenkins-docker-agent
+    restart: always
+    volumes:
+      - jenkins-workspace:/workspace
+      - jenkins-data:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    env_file: ./.env
+    privileged: true
+    deploy:
+      mode: replicated
+      replicas: 2
+
+volumes:
+  openldap-data:
+  openldap-config:
+  gitlab-data:
+  gitlab-logs:
+  gitlab-config:
+  jenkins-data:
+  jenkins-workspace:
