@@ -18,7 +18,7 @@ String rootDN = env.LDAP_BASE_DN
 String userSearchBase = ''
 String userSearch = "(&(uid={0})(memberof=cn=devops-user,ou=roles,${env.LDAP_BASE_DN}))"
 String groupSearchBase = ''
-String managerDN = "cn=${env.LDAP_READONLY_USER_USERNAME},${env.LDAP_BASE_DN}"
+String managerDN = "cn=readonly,${env.LDAP_BASE_DN}"
 String passcode = env.LDAP_READONLY_USER_PASSWORD
 boolean inhibitInferRootDN = false
 

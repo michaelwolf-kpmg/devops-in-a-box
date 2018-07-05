@@ -1,0 +1,102 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose -f /workspace/docker-compose.yml convert
+    kompose.version: 1.15.0 (HEAD)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: openldap
+  name: openldap
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: openldap
+    spec:
+      containers:
+      - env:
+        - name: DOS_SYSTEM_USER_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              key: DOS_SYSTEM_USER_PASSWORD
+              name: openldap-env
+        - name: GITLAB_API_KEY
+          valueFrom:
+            configMapKeyRef:
+              key: GITLAB_API_KEY
+              name: openldap-env
+        - name: GITLAB_URL
+          valueFrom:
+            configMapKeyRef:
+              key: GITLAB_URL
+              name: openldap-env
+        - name: JENKINS_URL
+          valueFrom:
+            configMapKeyRef:
+              key: JENKINS_URL
+              name: openldap-env
+        - name: LDAP_BASE_DN
+          valueFrom:
+            configMapKeyRef:
+              key: LDAP_BASE_DN
+              name: openldap-env
+        - name: LDAP_DOMAIN
+          valueFrom:
+            configMapKeyRef:
+              key: LDAP_DOMAIN
+              name: openldap-env
+        - name: LDAP_ORGANISATION
+          valueFrom:
+            configMapKeyRef:
+              key: LDAP_ORGANISATION
+              name: openldap-env
+        - name: LDAP_READONLY_USER_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              key: LDAP_READONLY_USER_PASSWORD
+              name: openldap-env
+        - name: NGINX_PORT
+          valueFrom:
+            configMapKeyRef:
+              key: NGINX_PORT
+              name: openldap-env
+        - name: NGINX_RESOLVER
+          valueFrom:
+            configMapKeyRef:
+              key: NGINX_RESOLVER
+              name: openldap-env
+        - name: NGINX_SERVER_NAME
+          valueFrom:
+            configMapKeyRef:
+              key: NGINX_SERVER_NAME
+              name: openldap-env
+        - name: NGINX_SERVICE_SUFFIX
+          valueFrom:
+            configMapKeyRef:
+              key: NGINX_SERVICE_SUFFIX
+              name: openldap-env
+        imagePullPolicy: Always
+        image: jardilio/devops-in-a-box-openldap:latest
+        name: openldap
+        ports:
+        - containerPort: 389
+        resources: {}
+        volumeMounts:
+        - mountPath: /var/lib/ldap
+          name: openldap-data
+        - mountPath: /etc/ldap/slapd.d
+          name: openldap-config
+      restartPolicy: Always
+      volumes:
+      - name: openldap-data
+        persistentVolumeClaim:
+          claimName: openldap-data
+      - name: openldap-config
+        persistentVolumeClaim:
+          claimName: openldap-config
+status: {}

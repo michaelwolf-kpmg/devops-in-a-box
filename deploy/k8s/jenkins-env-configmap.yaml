@@ -1,0 +1,20 @@
+apiVersion: v1
+data:
+  DOS_SYSTEM_USER_PASSWORD: P@$$w0rd
+  GITLAB_API_KEY: foobar
+  GITLAB_URL: http://localhost/gitlab
+  JENKINS_URL: http://localhost/jenkins
+  LDAP_BASE_DN: dc=devops
+  LDAP_DOMAIN: devops
+  LDAP_ORGANISATION: DevOps
+  LDAP_READONLY_USER_PASSWORD: P@$$w0rd
+  NGINX_PORT: "80"
+  NGINX_RESOLVER: kube-dns.kube-system.svc.cluster.local
+  NGINX_SERVER_NAME: localhost
+  NGINX_SERVICE_SUFFIX: .default.svc.cluster.local
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: jenkins-env
+  name: jenkins-env

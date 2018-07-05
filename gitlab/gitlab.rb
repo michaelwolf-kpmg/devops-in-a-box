@@ -11,7 +11,7 @@
 ##! For more details on configuring external_url see:
 ##! https://docs.gitlab.com/omnibus/settings/configuration.html#configuring-the-external-url-for-gitlab
 # external_url 'GENERATED_EXTERNAL_URL'
-external_url ENV['GITLAB_HOST']
+external_url ENV['GITLAB_URL']
 
 ## Roles for multi-instance GitLab
 ##! The default is to have no roles enabled, which results in GitLab running as an all-in-one instance.
@@ -233,7 +233,7 @@ openldap:
   host: 'openldap'
   port: 389
   uid: 'uid'
-  bind_dn: 'cn=#{ENV['LDAP_READONLY_USER_USERNAME']},#{ENV['LDAP_BASE_DN']}'
+  bind_dn: 'cn=readonly,#{ENV['LDAP_BASE_DN']}'
   password: '#{ENV['LDAP_READONLY_USER_PASSWORD']}'
   encryption: 'plain'
   verify_certificates: true
@@ -416,7 +416,7 @@ gitlab_rails['backup_path'] = "/var/opt/gitlab/backups"
 #### Change the initial default admin password and shared runner registraion tokens.
 ####! **Only applicable on initial setup, changing these settings after database
 ####!   is created and seeded won't yield any change.**
-gitlab_rails['initial_root_password'] = ENV['LDAP_ADMIN_PASSWORD']
+gitlab_rails['initial_root_password'] = 'P@$$w0rd'
 # gitlab_rails['initial_shared_runners_registration_token'] = "token"
 
 #### Enable or disable automatic database migrations
@@ -979,8 +979,8 @@ postgresql['shared_buffers'] = "1MB"
 # nginx['proxy_cache'] = 'gitlab'
 # nginx['http2_enabled'] = true
 # nginx['real_ip_trusted_addresses'] = []
-# nginx['real_ip_header'] = nil
-# nginx['real_ip_recursive'] = nil
+nginx['real_ip_header'] = 'X-Real-IP'
+nginx['real_ip_recursive'] = 'on'
 # nginx['custom_error_pages'] = {
 #   '404' => {
 #     'title' => 'Example title',

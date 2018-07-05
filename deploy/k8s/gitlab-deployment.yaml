@@ -1,0 +1,102 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose -f /workspace/docker-compose.yml convert
+    kompose.version: 1.15.0 (HEAD)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: gitlab
+  name: gitlab
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: gitlab
+    spec:
+      containers:
+      - env:
+        - name: DOS_SYSTEM_USER_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              key: DOS_SYSTEM_USER_PASSWORD
+              name: gitlab-env
+        - name: GITLAB_API_KEY
+          valueFrom:
+            configMapKeyRef:
+              key: GITLAB_API_KEY
+              name: gitlab-env
+        - name: GITLAB_URL
+          valueFrom:
+            configMapKeyRef:
+              key: GITLAB_URL
+              name: gitlab-env
+        - name: JENKINS_URL
+          valueFrom:
+            configMapKeyRef:
+              key: JENKINS_URL
+              name: gitlab-env
+        - name: LDAP_BASE_DN
+          valueFrom:
+            configMapKeyRef:
+              key: LDAP_BASE_DN
+              name: gitlab-env
+        - name: LDAP_DOMAIN
+          valueFrom:
+            configMapKeyRef:
+              key: LDAP_DOMAIN
+              name: gitlab-env
+        - name: LDAP_ORGANISATION
+          valueFrom:
+            configMapKeyRef:
+              key: LDAP_ORGANISATION
+              name: gitlab-env
+        - name: LDAP_READONLY_USER_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              key: LDAP_READONLY_USER_PASSWORD
+              name: gitlab-env
+        - name: NGINX_PORT
+          valueFrom:
+            configMapKeyRef:
+              key: NGINX_PORT
+              name: gitlab-env
+        - name: NGINX_RESOLVER
+          valueFrom:
+            configMapKeyRef:
+              key: NGINX_RESOLVER
+              name: gitlab-env
+        - name: NGINX_SERVER_NAME
+          valueFrom:
+            configMapKeyRef:
+              key: NGINX_SERVER_NAME
+              name: gitlab-env
+        - name: NGINX_SERVICE_SUFFIX
+          valueFrom:
+            configMapKeyRef:
+              key: NGINX_SERVICE_SUFFIX
+              name: gitlab-env
+        imagePullPolicy: Always
+        image: jardilio/devops-in-a-box-gitlab:latest
+        name: gitlab
+        ports:
+        - containerPort: 80
+        resources: {}
+        volumeMounts:
+        - mountPath: /var/opt/gitlab
+          name: gitlab-data
+        - mountPath: /var/log/gitlab
+          name: gitlab-logs
+      restartPolicy: Always
+      volumes:
+      - name: gitlab-data
+        persistentVolumeClaim:
+          claimName: gitlab-data
+      - name: gitlab-logs
+        persistentVolumeClaim:
+          claimName: gitlab-logs
+status: {}
