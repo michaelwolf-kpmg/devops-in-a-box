@@ -3,10 +3,13 @@
 rm -rf /workspace/deploy/k8s/*.yaml
 kompose -f /workspace/docker-compose.yml convert
 
-# fix until https://github.com/kubernetes/kompose/issues/1036, forcing pull of latest each time for testing
+# for now, force redeployment every time when we are using latest image tags
 for DEPLOYMENT in $(find /workspace/deploy/k8s/*-deployment.yaml -type f)
 do
-    sed -i -e 's/image:/imagePullPolicy: Always\n        image:/g' $DEPLOYMENT
+    sed -i \
+        -e 's/image:/imagePullPolicy: Always\n        image:/g' \
+        -e 's/creationTimestamp: null/creationTimestamp: '"$(date -u +"%Y-%m-%dT%H:%M:%SZ")"'/g' \
+        $DEPLOYMENT
 done
 
 # no koompose mapping, jenkins runs not as root which break volume permissiong unless securityContext set properly
