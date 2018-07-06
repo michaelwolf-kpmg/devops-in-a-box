@@ -1180,7 +1180,7 @@ manage_accounts['enable'] = false
 
 # mattermost_external_url 'http://mattermost.example.com'
 
-# mattermost['enable'] = false
+mattermost['enable'] = false
 # mattermost['username'] = 'mattermost'
 # mattermost['group'] = 'mattermost'
 # mattermost['uid'] = nil
@@ -1214,7 +1214,7 @@ manage_accounts['enable'] = false
 # You just have to change the key "nginx['some_settings']" with "mattermost_nginx['some_settings']"
 
 # Below you can find settings that are exclusive to "Mattermost NGINX"
-# mattermost_nginx['enable'] = false
+mattermost_nginx['enable'] = false
 
 # mattermost_nginx['custom_gitlab_mattermost_server_config'] = "location ^~ /foo-namespace/bar-project/raw/ {\n deny all;\n}\n"
 # mattermost_nginx['proxy_set_headers'] = {
@@ -1310,7 +1310,7 @@ manage_accounts['enable'] = false
 ##! Docs: https://docs.gitlab.com/ce/administration/monitoring/prometheus/alertmanager.html
 ################################################################################
 
-# alertmanager['enable'] = true
+alertmanager['enable'] = false
 # alertmanager['home'] = '/var/opt/gitlab/alertmanager'
 # alertmanager['log_directory'] = '/var/log/gitlab/alertmanager'
 # alertmanager['admin_email'] = 'admin@example.com'
@@ -1328,7 +1328,7 @@ manage_accounts['enable'] = false
 ##! Docs: https://docs.gitlab.com/ce/administration/monitoring/prometheus/node_exporter.html
 ################################################################################
 
-# node_exporter['enable'] = true
+node_exporter['enable'] = false
 # node_exporter['home'] = '/var/opt/gitlab/node-exporter'
 # node_exporter['log_directory'] = '/var/log/gitlab/node-exporter'
 # node_exporter['flags'] = {
@@ -1343,7 +1343,7 @@ manage_accounts['enable'] = false
 ##! Docs: https://docs.gitlab.com/ce/administration/monitoring/prometheus/redis_exporter.html
 ################################################################################
 
-# redis_exporter['enable'] = true
+redis_exporter['enable'] = false
 # redis_exporter['log_directory'] = '/var/log/gitlab/redis-exporter'
 # redis_exporter['flags'] = {
 #   'redis.addr' => "unix://#{node['gitlab']['gitlab-rails']['redis_socket']}",
@@ -1357,7 +1357,7 @@ manage_accounts['enable'] = false
 ##! Docs: https://docs.gitlab.com/ce/administration/monitoring/prometheus/postgres_exporter.html
 ################################################################################
 
-# postgres_exporter['enable'] = true
+postgres_exporter['enable'] = false
 # postgres_exporter['home'] = '/var/opt/gitlab/postgres-exporter'
 # postgres_exporter['log_directory'] = '/var/log/gitlab/postgres-exporter'
 # postgres_exporter['flags'] = {}
@@ -1368,7 +1368,7 @@ manage_accounts['enable'] = false
 ##! Docs: https://docs.gitlab.com/ee/administration/monitoring/prometheus/pgbouncer_exporter.html
 ################################################################################
 
-# pgbouncer-exporter['enable'] = false
+pgbouncer-exporter['enable'] = false
 # pgbouncer-exporter['log_directory'] = "/var/log/gitlab/pgbouncer-exporter"
 # pgbouncer-exporter['listen_address'] = 'localhost:9188'
 
@@ -1378,7 +1378,7 @@ manage_accounts['enable'] = false
 ################################################################################
 
 
-# gitlab_monitor['enable'] = true
+gitlab_monitor['enable'] = false
 # gitlab_monitor['log_directory'] = "/var/log/gitlab/gitlab-monitor"
 # gitlab_monitor['home'] = "/var/opt/gitlab/gitlab-monitor"
 
@@ -1387,7 +1387,7 @@ manage_accounts['enable'] = false
 # gitlab_monitor['listen_port'] = '9168'
 
 # To completely disable prometheus, and all of it's exporters, set to false
-# prometheus_monitoring['enable'] = true
+prometheus_monitoring['enable'] = false
 
 ################################################################################
 ## Gitaly

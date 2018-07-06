@@ -65,29 +65,24 @@ services:
     restart: always
     volumes:
       - jenkins-data:/var/jenkins_home
-      #- jenkins-workspace:/var/jenkins_home/workspace
     env_file: ./.env
     depends_on:
       - proxy
       - openldap
-      #- jenkins-docker-agent
+      - jenkins-docker-agent
     ports:
       - 8080
+      - 50000
 
-  # TODO: share volume and mount docker in k8s
-  # jenkins-docker-agent:
-  #   image: jardilio/devops-in-a-box-jenkins-docker-agent:latest
-  #   build: ./jenkins-docker-agent
-  #   restart: always
-  #   volumes:
-  #     - jenkins-workspace:/workspace
-  #     - jenkins-data:/var/jenkins_home
-  #     - /var/run/docker.sock:/var/run/docker.sock:ro
-  #   env_file: ./.env
-  #   privileged: true
-  #   deploy:
-  #     mode: replicated
-  #     replicas: 2
+  jenkins-docker-agent:
+    image: jardilio/devops-in-a-box-jenkins-docker-agent:latest
+    build: ./jenkins-docker-agent
+    restart: always
+    env_file: ./.env
+    privileged: true
+    deploy:
+      mode: replicated
+      replicas: 2
 
 volumes:
   openldap-data:
@@ -95,4 +90,3 @@ volumes:
   gitlab-data:
   gitlab-logs:
   jenkins-data:
-  jenkins-workspace:
