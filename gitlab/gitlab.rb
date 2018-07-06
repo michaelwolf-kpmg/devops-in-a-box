@@ -979,8 +979,8 @@ postgresql['shared_buffers'] = "1MB"
 # nginx['proxy_cache'] = 'gitlab'
 # nginx['http2_enabled'] = true
 # nginx['real_ip_trusted_addresses'] = []
-nginx['real_ip_header'] = 'X-Real-IP'
-nginx['real_ip_recursive'] = 'on'
+# nginx['real_ip_header'] = 'X-Real-IP'
+# nginx['real_ip_recursive'] = 'on'
 # nginx['custom_error_pages'] = {
 #   '404' => {
 #     'title' => 'Example title',
@@ -1310,7 +1310,7 @@ mattermost_nginx['enable'] = false
 ##! Docs: https://docs.gitlab.com/ce/administration/monitoring/prometheus/alertmanager.html
 ################################################################################
 
-alertmanager['enable'] = false
+# alertmanager['enable'] = false
 # alertmanager['home'] = '/var/opt/gitlab/alertmanager'
 # alertmanager['log_directory'] = '/var/log/gitlab/alertmanager'
 # alertmanager['admin_email'] = 'admin@example.com'
@@ -1328,7 +1328,7 @@ alertmanager['enable'] = false
 ##! Docs: https://docs.gitlab.com/ce/administration/monitoring/prometheus/node_exporter.html
 ################################################################################
 
-node_exporter['enable'] = false
+# node_exporter['enable'] = false
 # node_exporter['home'] = '/var/opt/gitlab/node-exporter'
 # node_exporter['log_directory'] = '/var/log/gitlab/node-exporter'
 # node_exporter['flags'] = {
@@ -1343,7 +1343,7 @@ node_exporter['enable'] = false
 ##! Docs: https://docs.gitlab.com/ce/administration/monitoring/prometheus/redis_exporter.html
 ################################################################################
 
-redis_exporter['enable'] = false
+# redis_exporter['enable'] = false
 # redis_exporter['log_directory'] = '/var/log/gitlab/redis-exporter'
 # redis_exporter['flags'] = {
 #   'redis.addr' => "unix://#{node['gitlab']['gitlab-rails']['redis_socket']}",
@@ -1357,7 +1357,7 @@ redis_exporter['enable'] = false
 ##! Docs: https://docs.gitlab.com/ce/administration/monitoring/prometheus/postgres_exporter.html
 ################################################################################
 
-postgres_exporter['enable'] = false
+# postgres_exporter['enable'] = false
 # postgres_exporter['home'] = '/var/opt/gitlab/postgres-exporter'
 # postgres_exporter['log_directory'] = '/var/log/gitlab/postgres-exporter'
 # postgres_exporter['flags'] = {}
@@ -1368,7 +1368,7 @@ postgres_exporter['enable'] = false
 ##! Docs: https://docs.gitlab.com/ee/administration/monitoring/prometheus/pgbouncer_exporter.html
 ################################################################################
 
-pgbouncer-exporter['enable'] = false
+# pgbouncer-exporter['enable'] = false
 # pgbouncer-exporter['log_directory'] = "/var/log/gitlab/pgbouncer-exporter"
 # pgbouncer-exporter['listen_address'] = 'localhost:9188'
 
@@ -1378,7 +1378,7 @@ pgbouncer-exporter['enable'] = false
 ################################################################################
 
 
-gitlab_monitor['enable'] = false
+# gitlab_monitor['enable'] = false
 # gitlab_monitor['log_directory'] = "/var/log/gitlab/gitlab-monitor"
 # gitlab_monitor['home'] = "/var/opt/gitlab/gitlab-monitor"
 
