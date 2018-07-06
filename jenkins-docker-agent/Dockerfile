@@ -21,4 +21,4 @@ RUN curl --create-dirs -sSLo /usr/share/jenkins/swarm-client.jar https://repo.je
   && chmod 755 /usr/share/jenkins
 
 ENTRYPOINT ["wrapdocker"]
-CMD ["/usr/bin/java", "-jar", "/usr/share/jenkins/swarm-client.jar", "-master", "http://jenkins:8080/jenkins", "-username", "devops-system", "-passwordEnvVariable", "DOS_SYSTEM_USER_PASSWORD", "-labels", "docker", "-name", "docker-agent", "-showHostName"]
+CMD ["/usr/bin/java", "-jar", "/usr/share/jenkins/swarm-client.jar", "-master", "http://jenkins:8080/jenkins", "-username", "devops-system", "-passwordEnvVariable", "JENKINS_AGENT_PASSWORD", "-labels", "docker", "-name", "docker-agent", "-showHostName"]

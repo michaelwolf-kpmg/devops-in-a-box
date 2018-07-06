@@ -1,6 +1,10 @@
 #!/bin/bash
 
 rm -rf /workspace/deploy/k8s/*.yaml
+
+export $(cat /workspace/.env | xargs) && \
+export NGINX_RESOLVER=kube-dns.kube-system.svc.cluster.local && \
+export NGINX_SERVICE_SUFFIX=.default.svc.cluster.local && \
 kompose -f /workspace/docker-compose.yml convert
 
 # for now, force redeployment every time when we are using latest image tags
