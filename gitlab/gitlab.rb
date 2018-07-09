@@ -68,8 +68,8 @@ external_url ENV['GITLAB_URL']
 # gitlab_rails['gitlab_default_projects_features_merge_requests'] = true
 # gitlab_rails['gitlab_default_projects_features_wiki'] = true
 # gitlab_rails['gitlab_default_projects_features_snippets'] = true
-# gitlab_rails['gitlab_default_projects_features_builds'] = true
-# gitlab_rails['gitlab_default_projects_features_container_registry'] = true
+gitlab_rails['gitlab_default_projects_features_builds'] = false
+gitlab_rails['gitlab_default_projects_features_container_registry'] = false
 
 ### Automatic issue closing
 ###! See https://docs.gitlab.com/ce/customization/issue_closing.html for more
@@ -217,7 +217,7 @@ external_url ENV['GITLAB_URL']
 ### GitLab Mattermost
 ###! These settings are void if Mattermost is installed on the same omnibus
 ###! install
-# gitlab_rails['mattermost_host'] = "https://mattermost.example.com"
+gitlab_rails['mattermost_host'] = ENV['MATTERMOST_URL']
 
 ### LDAP Settings
 ###! Docs: https://docs.gitlab.com/omnibus/settings/ldap.html
@@ -417,7 +417,7 @@ gitlab_rails['backup_path'] = "/var/opt/gitlab/backups"
 ####! **Only applicable on initial setup, changing these settings after database
 ####!   is created and seeded won't yield any change.**
 gitlab_rails['initial_root_password'] = 'P@$$w0rd'
-# gitlab_rails['initial_shared_runners_registration_token'] = "token"
+gitlab_rails['initial_shared_runners_registration_token'] = ENV['GITLAB_TOKEN']
 
 #### Enable or disable automatic database migrations
 # gitlab_rails['auto_migrate'] = true
@@ -1178,7 +1178,7 @@ manage_accounts['enable'] = false
 ##! Docs: https://docs.gitlab.com/omnibus/gitlab-mattermost
 ################################################################################
 
-# mattermost_external_url 'http://mattermost.example.com'
+mattermost_external_url ENV['MATTERMOST_URL']
 
 mattermost['enable'] = false
 # mattermost['username'] = 'mattermost'

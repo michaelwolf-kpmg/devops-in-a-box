@@ -7,7 +7,7 @@ services:
     container_name: proxy
     restart: always
     environment:
-      NGINX_SERVER_NAME: $NGINX_SERVER_NAME
+      NGINX_SERVER_NAME: $DOS_HOSTNAME
       NGINX_PORT: $NGINX_PORT
       NGINX_RESOLVER: $NGINX_RESOLVER
       NGINX_SERVICE_SUFFIX: $NGINX_SERVICE_SUFFIX
@@ -47,6 +47,8 @@ services:
     ports:
       - 80
 
+  # TODO: external smtp server
+
   gitlab:
     image: jardilio/devops-in-a-box-gitlab:latest
     build: ./gitlab
@@ -58,12 +60,16 @@ services:
     environment:
       LDAP_BASE_DN: $LDAP_BASE_DN
       LDAP_READONLY_USER_PASSWORD: $LDAP_READONLY_USER_PASSWORD
-      GITLAB_URL: $GITLAB_URL
+      GITLAB_TOKEN: $GITLAB_TOKEN
+      GITLAB_URL: $DOS_PROTOCOL://$DOS_HOSTNAME/gitlab
+      MATTERMOST_URL: $DOS_PROTOCOL://$DOS_HOSTNAME/mattermost
     depends_on:
       - openldap
       - proxy
     ports:
       - 80
+
+  # TODO: external postgres and redis for gitlab
 
   jenkins:
     image: jardilio/devops-in-a-box-jenkins:latest
@@ -75,8 +81,9 @@ services:
     environment:
       LDAP_BASE_DN: $LDAP_BASE_DN
       LDAP_READONLY_USER_PASSWORD: $LDAP_READONLY_USER_PASSWORD
-      GITLAB_URL: $GITLAB_URL
-      JENKINS_URL: $JENKINS_URL
+      GITLAB_TOKEN: $GITLAB_TOKEN
+      GITLAB_URL: $DOS_PROTOCOL://$DOS_HOSTNAME/gitlab
+      JENKINS_URL: $DOS_PROTOCOL://$DOS_HOSTNAME/jenkins
     depends_on:
       - proxy
       - openldap
@@ -92,55 +99,54 @@ services:
     privileged: true
     environment:
       JENKINS_AGENT_PASSWORD: $DOS_SYSTEM_USER_PASSWORD
-      JENKINS_AGENT_NUM_EXECUTORS: $JENKINS_AGENT_NUM_EXECUTORS
     deploy:
       mode: replicated
       replicas: 2
+    # TODO: volume mapping for jenkins workspace share and docker image cache
 
-  rocketchat:
-    image: rocket.chat:0.66
-    container_name: rocketchat
+  mattermost:
+    image: jardilio/devops-in-a-box-mattermost:latest
+    build: ./mattermost
     restart: always
+    container_name: mattermost
     environment:
-      ROOT_URL: $ROCKETCHAT_URL
-      MONGO_URL: mongodb://rocketchat-database:27017/rocketchat
-      OVERWRITE_SETTING_LDAP_BaseDN: $LDAP_BASE_DN
-      OVERWRITE_SETTING_LDAP_Authentication_UserDN: cn=$LDAP_READONLY_USER_USERNAME,dc=devops
-      OVERWRITE_SETTING_LDAP_User_Search_Filter: (memberOf=cn=devops-user,ou=roles,$LDAP_BASE_DN)
-      OVERWRITE_SETTING_LDAP_Enable: 'true'
-      OVERWRITE_SETTING_LDAP_Login_Fallback: 'true'
-      OVERWRITE_SETTING_LDAP_Host: openldap
-      OVERWRITE_SETTING_LDAP_Authentication: 'true'
-      OVERWRITE_SETTING_LDAP_Username_Field: '#{cn}'
-      OVERWRITE_SETTING_LDAP_Merge_Existing_Users: 'true'
-      OVERWRITE_SETTING_LDAP_Sync_User_Data: 'true'
-      OVERWRITE_SETTING_LDAP_Sync_User_Avatar: 'false'
-      OVERWRITE_SETTING_LDAP_User_Search_Field: uid
-      OVERWRITE_SETTING_LDAP_User_Search_Scope: ''
-      OVERWRITE_SETTING_LDAP_Unique_Identifier_Field: objectGUID
-      OVERWRITE_SETTING_LDAP_User_Search_Field: uid
-      OVERWRITE_SETTING_Accounts_RegistrationForm: Disabled
+      MATTERMOST_URL: $DOS_PROTOCOL://$DOS_HOSTNAME/mattermost
+      MM_PASSWORD: $MATTERMOST_DB_PASSWORD
+      DB_HOST: mattermost-db
+      LDAP_BASE_DN: $LDAP_BASE_DN
+      LDAP_READONLY_USER_PASSWORD: $LDAP_READONLY_USER_PASSWORD
+      GITLAB_TOKEN: $GITLAB_TOKEN
+      GITLAB_URL: $DOS_PROTOCOL://$DOS_HOSTNAME/gitlab
+    ports:
+      # TODO: remove external mapping, need to fix mattermost to run in subpath
+      - 8000:8000
+    volumes:
+      - mattermost-data:/mattermost/data
+      - mattermost-logs:/mattermost/logs
+      - mattermost-config:/mattermost/config
     depends_on:
       - proxy
-      - openldap
-      - rocketchat-database
-    ports:
-      - 3000
+      - mattermost-db
 
-  rocketchat-database:
-    image: mongo:3
-    container_name: rocketchat-database
+  mattermost-db:
+    image: mattermost/mattermost-prod-db
     restart: always
+    container_name: mattermost-db
+    environment:
+      POSTGRES_USER: mmuser
+      POSTGRES_PASSWORD: $MATTERMOST_DB_PASSWORD
+      POSTGRES_DB: mattermost
     volumes:
-      - rocketchat-data:/data/db
-    ports:
-      - 27017
-    command: mongod --smallfiles
+      - mattermost-db-data:/var/lib/postgresql/data
+    ports: 
+      - 5432
 
 volumes:
   openldap-data:
   gitlab-data:
   gitlab-logs:
   jenkins-data:
-  rocketchat-uploads:
-  rocketchat-data:
+  mattermost-data:
+  mattermost-logs:
+  mattermost-config:
+  mattermost-db-data:

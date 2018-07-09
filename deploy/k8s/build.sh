@@ -16,7 +16,7 @@ do
         $DEPLOYMENT
 done
 
-# no koompose mapping, jenkins runs not as root which break volume permissiong unless securityContext set properly
+# no kompose mapping, jenkins runs not as root which break volume permissiong unless securityContext set properly
 sed -i -e 's/containers:/securityContext:\n        fsGroup: 1000\n      containers:/g' /workspace/deploy/k8s/jenkins-deployment.yaml
 
 # fix until https://github.com/kubernetes/kompose/issues/1046, shared volume between master and agents

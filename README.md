@@ -59,7 +59,8 @@ docker-compose build
 docker-compose push
 ```
 
-Once the images have been built and pushed to the repos, you can deploy using one of the helper services in [deploy](./deploy):
+Once the images have been built and pushed to the repos, you can deploy using one of the helper services in [deploy](./deploy). Make
+sure that [.env](./.env) is updated for the target environment, this is used to build the default configuration files for kubernetes.
 
 ```
 cd deploy

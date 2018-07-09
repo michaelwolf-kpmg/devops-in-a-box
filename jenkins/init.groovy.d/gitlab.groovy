@@ -29,12 +29,12 @@ def gitlabCredentials = new GitLabApiTokenImpl(
     CredentialsScope.GLOBAL,
     "gitlab",
     "gitlab API key for gitlab - ${env.GITLAB_URL}",
-    new Secret(env.GITLAB_API_KEY)
+    new Secret(env.GITLAB_TOKEN)
 )
 def gitlabConfig = new GitLabConnection(
     "gitlab",
     env.GITLAB_URL,
-    env.GITLAB_API_KEY,
+    env.GITLAB_TOKEN,
     true,
     10,
     10
