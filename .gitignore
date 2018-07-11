@@ -1,4 +1,4 @@
 .idea
 **/*.DS_Store
-deploy/gcp/key.json
+deploy/*/key.*
 deploy/k8s/*.yaml

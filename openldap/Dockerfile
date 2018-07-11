@@ -4,6 +4,7 @@ ENV LDAP_ADMIN_PASSWORD='P@$$w0rd'
 ENV LDAP_CONFIG_PASSWORD='P@$$w0rd'
 ENV LDAP_READONLY_USER="true"
 ENV LDAP_READONLY_USER_USERNAME="readonly"
+ENV LDAP_READONLY_USER_PASSWORD='P@$$w0rd'
 
 RUN rm -rf /container/service/slapd/assets/config/bootstrap/ldif/custom
 RUN mkdir -p /container/service/slapd/assets/config/bootstrap/ldif/custom

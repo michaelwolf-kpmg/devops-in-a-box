@@ -9,10 +9,20 @@ services:
       - ../:/workspace
 
   gcp:
-    build: ./gcp
-    command: sh ./deploy/gcp/deploy.sh
-    working_dir: /workspace
+    image: google/cloud-sdk
+    entrypoint: ["sh", "./deploy/gcp/deploy.sh"]
     env_file: ./gcp/.env
+    working_dir: /workspace
+    volumes:
+      - ../:/workspace
+    depends_on:
+      - k8s
+
+  aws:
+    build: ./aws
+    entrypoint: ["sh", "./deploy/aws/deploy.sh"]
+    env_file: ./aws/.env
+    working_dir: /workspace
     volumes:
       - ../:/workspace
     depends_on:
