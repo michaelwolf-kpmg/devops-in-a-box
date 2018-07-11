@@ -4,11 +4,10 @@ A# Overview
 
 * [Jenkins](./jenkins) - Solution for continuous integration and delivery
 * [GitLab](./gitlab) - Solution for code repository, review and task management
-* [Nexus](./nexus) - Solution for repository of build artifacts
-* [SonarQube](./sonarqube) - Solution for code quality analysis
-* [Graphite](./graphite) - Solution for performance monitoring of web applications
 * [OpenLDAP](./openldap) - Solution for single LDAP authentication for all above services
 * [NGINX](./proxy) - Solution for subdomain reverse proxy for all above services
+
+*NOTE* More services in progress including: mattermost, nexus, sonarqube, prometheus, ansible...
 
 See each of the solution providers above for more information about the implementation and configuration
 
@@ -24,22 +23,20 @@ docker-compose up
 This may take a few minutes to download and build the dependencies the first time. Once complete, each
 of the services should be running as configured in [docker-compose.yml](./docker-compose.yml).
 
-Note that there are currently 9 services and 6 volumes that must initialize, it may take 
-a bit after the initial build for all services to become available, check your console.
+Note that there are many services and volumes that must initialize, it may take 
+a bit after the initial build for all services to become available, check your console. You will get 502
+errors from the proxy server until the service is ready and reachable.
 
 If you want to speed up this process for testing and only work with a single named service, you can 
 reduce the total number of loaded services and only load it and its dependencies, example:
 
 ```
-docker-compose up nexus
+docker-compose up jenkins
 ```
 
-* [Jenkins](./jenkins) - [http://jenkins.localhost](http://jenkins.localhost)
-* [GitLab](./gitlab) - [http://gitlab.localhost](http://gitlab.localhost)
-* [Nexus](./nexus) - [http://nexus.localhost](http://nexus.localhost)
-* [SonarQube](./sonarqube) - [http://sonarqube.localhost](http://sonarqube.localhost)
-* [Graphite](./graphite) - [http://graphite.localhost](http://graphite.localhost)
-* [OpenLDAP](./openldap) - [http://openldap-admin.localhost](http://openldap-admin.localhost)
+* [Jenkins](./jenkins) - [http://jenkins.localhost](http://localhost/jenkins)
+* [GitLab](./gitlab) - [http://gitlab.localhost](http://localhost/gitlab)
+* [OpenLDAP](./openldap) - [http://openldap-admin.localhost](http://localhost/openldap)
 
 The [docker-compose.yml](./docker-compose.yml) file makes use of environment variables which
 are defined in [.env](./.env) and is read in automatically by `docker-compose` when executed.
@@ -66,7 +63,3 @@ sure that [.env](./.env) is updated for the target environment, this is used to 
 cd deploy
 docker-compose run gcp
 ```
-
-# Project Status and Issues
-
-Please see the [Jira](https://jira.cynergy.com/jira/secure/RapidBoard.jspa?rapidView=60) page for this project. Create a [New Task](https://jira.cynergy.com/jira/secure/CreateSubTaskIssue.jspa?parentIssueId=116202&pid=13721&issuetype=17).

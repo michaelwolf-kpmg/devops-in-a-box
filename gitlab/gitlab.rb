@@ -1178,7 +1178,7 @@ manage_accounts['enable'] = false
 ##! Docs: https://docs.gitlab.com/omnibus/gitlab-mattermost
 ################################################################################
 
-mattermost_external_url ENV['MATTERMOST_URL']
+# mattermost_external_url ENV['MATTERMOST_URL']
 
 mattermost['enable'] = false
 # mattermost['username'] = 'mattermost'

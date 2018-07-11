@@ -104,49 +104,8 @@ services:
       replicas: 2
     # TODO: volume mapping for jenkins workspace share and docker image cache
 
-  mattermost:
-    image: jardilio/devops-in-a-box-mattermost:latest
-    build: ./mattermost
-    restart: always
-    container_name: mattermost
-    environment:
-      MATTERMOST_URL: $DOS_PROTOCOL://$DOS_HOSTNAME/mattermost
-      MM_PASSWORD: $MATTERMOST_DB_PASSWORD
-      DB_HOST: mattermost-db
-      LDAP_BASE_DN: $LDAP_BASE_DN
-      LDAP_READONLY_USER_PASSWORD: $LDAP_READONLY_USER_PASSWORD
-      GITLAB_TOKEN: $GITLAB_TOKEN
-      GITLAB_URL: $DOS_PROTOCOL://$DOS_HOSTNAME/gitlab
-    ports:
-      # TODO: remove external mapping, need to fix mattermost to run in subpath
-      - 8000:8000
-    volumes:
-      - mattermost-data:/mattermost/data
-      - mattermost-logs:/mattermost/logs
-      - mattermost-config:/mattermost/config
-    depends_on:
-      - proxy
-      - mattermost-db
-
-  mattermost-db:
-    image: mattermost/mattermost-prod-db
-    restart: always
-    container_name: mattermost-db
-    environment:
-      POSTGRES_USER: mmuser
-      POSTGRES_PASSWORD: $MATTERMOST_DB_PASSWORD
-      POSTGRES_DB: mattermost
-    volumes:
-      - mattermost-db-data:/var/lib/postgresql/data
-    ports: 
-      - 5432
-
 volumes:
   openldap-data:
   gitlab-data:
   gitlab-logs:
   jenkins-data:
-  mattermost-data:
-  mattermost-logs:
-  mattermost-config:
-  mattermost-db-data:
