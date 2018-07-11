@@ -34,9 +34,9 @@ reduce the total number of loaded services and only load it and its dependencies
 docker-compose up jenkins
 ```
 
-* [Jenkins](./jenkins) - [http://jenkins.localhost](http://localhost/jenkins)
-* [GitLab](./gitlab) - [http://gitlab.localhost](http://localhost/gitlab)
-* [OpenLDAP](./openldap) - [http://openldap-admin.localhost](http://localhost/openldap)
+* [Jenkins](./jenkins) - [http://localhost/jenkins](http://localhost/jenkins)
+* [GitLab](./gitlab) - [http://localhost/gitlab](http://localhost/gitlab)
+* [OpenLDAP](./openldap) - [http://localhost/openldap](http://localhost/openldap)
 
 The [docker-compose.yml](./docker-compose.yml) file makes use of environment variables which
 are defined in [.env](./.env) and is read in automatically by `docker-compose` when executed.
